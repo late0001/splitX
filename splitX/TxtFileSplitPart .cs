@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,13 @@ using System.Threading.Tasks;
 
 namespace splitX
 {
+    public class ProcessState {
+        public int process;
+        public string itemStatus;
+    }
     public class TxtFileSplitPart
     {
-        public void FileCut(string sourcePath, string targetFolder, long fileSize)
+        public void FileCut(string sourcePath, string targetFolder, long fileSize, BackgroundWorker worker)
         {
             if (fileSize <= 0)
             {
@@ -27,9 +32,13 @@ namespace splitX
             int fileIndex = 1;
             long fileLength = fileInfo.Length;
             long readFileLength = 0;
+            ProcessState userState = new ProcessState();
             while (readFileLength < fileLength)
             {
                 string writeFile = Path.Combine(targetFolder, $"{fileName}_{fileIndex.ToString("D2")}{fileInfo.Extension}");
+                userState.process = 0;
+                userState.itemStatus = "正在处理: " + $"{fileName}_{fileIndex.ToString("D2")}{fileInfo.Extension}";
+                worker.ReportProgress(10, userState);
                 FileStream fsWrite = new FileStream(writeFile, FileMode.CreateNew, FileAccess.Write);
                 BinaryWriter bw = new BinaryWriter(fsWrite);
                 long singleFileLength = 0;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -31,10 +32,13 @@ namespace splitX
             Stopwatch st = new Stopwatch();
             st.Start();
             TxtFileSplitPart txtSplit = new TxtFileSplitPart();
-            txtSplit.FileCut(sourcePath, targetPath, splitMB);
+            txtSplit.FileCut(sourcePath, targetPath, splitMB, worker);
             st.Stop();
             Console.WriteLine($"完成,耗时:{st.ElapsedMilliseconds / 1000}s");
-            statusTB.Text = $"完成,耗时:{st.ElapsedMilliseconds / 1000}s";
+            //statusTB.Text = $"完成,耗时:{st.ElapsedMilliseconds / 1000}s";
+            ProcessState userState = new ProcessState();
+            userState.itemStatus = $"完成,耗时:{st.ElapsedMilliseconds / 1000}s";
+            worker.ReportProgress(100, userState);
         }
 
         void SplitByCount(string sourcePath, string targetpath) {
@@ -65,6 +69,54 @@ namespace splitX
             fsr.Close();
         }
 
+        class SplitParam
+        {
+            public string sourcePath;
+            public string targetFolder;
+            public int singleFileSize;
+            public SplitParam(string source, string target, int size) {
+                sourcePath = source;
+                targetFolder = target;
+                singleFileSize = size;
+            }
+        }
+        private BackgroundWorker worker = null;
+
+        public void initTask(string sourcePath, string targetPath, int splitMB = 50) {
+            worker = new BackgroundWorker();
+            worker.DoWork += splitHandler;
+            worker.RunWorkerCompleted += splitCompleteHandler;
+            worker.ProgressChanged += splitProgressHandler;
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.RunWorkerAsync(new SplitParam(sourcePath, targetPath, splitMB));
+        }
+
+        private void splitProgressHandler(object sender, ProgressChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+            ProcessState  userState = (ProcessState) e.UserState;
+            statusTB.Text = userState.itemStatus;
+
+        }
+
+        private void splitCompleteHandler(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void splitHandler(object sender, DoWorkEventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (worker.CancellationPending) {
+                e.Cancel = true;
+                return;
+            }
+            SplitParam s = (SplitParam)e.Argument;
+            Split(s.sourcePath, s.targetFolder, s.singleFileSize);
+
+        }
+
         private void splitBtn_Click(object sender, RoutedEventArgs e)
         {
             string sourcePath = txtBox1.Text.Trim();
@@ -87,7 +139,8 @@ namespace splitX
 
             FileInfo fileInfo = new FileInfo(sourcePath);
             string targetFolder = fileInfo.DirectoryName;
-            Split(sourcePath, targetFolder, singleFileSize);
+            //Split(sourcePath, targetFolder, singleFileSize);
+            initTask(sourcePath, targetFolder, singleFileSize);
 
 
         }
