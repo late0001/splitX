@@ -139,6 +139,8 @@ namespace splitX
 
             FileInfo fileInfo = new FileInfo(sourcePath);
             string targetFolder = fileInfo.DirectoryName;
+            if (saveTxtBox.Text != "")
+                targetFolder = saveTxtBox.Text;
             //Split(sourcePath, targetFolder, singleFileSize);
             initTask(sourcePath, targetFolder, singleFileSize);
 
@@ -177,6 +179,18 @@ namespace splitX
                txtBox1.Text = of.FileName;
             }
 
+        }
+
+        private void saveBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            //Microsoft.Win32.OpenFileDialog of = new Microsoft.Win32.OpenFileDialog();
+            Microsoft.Win32.SaveFileDialog of = new Microsoft.Win32.SaveFileDialog();
+            if (of.ShowDialog() == true)
+            {
+                FileInfo fileInfo = new FileInfo(of.FileName);
+                string targetFolder = fileInfo.DirectoryName;
+                saveTxtBox.Text = targetFolder;
+            }
         }
     }
 }

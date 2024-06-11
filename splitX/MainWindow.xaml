@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Grid>
-    
+
         <Border CornerRadius="10 10 10 10">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -17,48 +17,59 @@
                 </LinearGradientBrush>
             </Border.Background>
             <Grid>
-            <Grid.RowDefinitions >
-                <RowDefinition Height="70" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="1.5*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Canvas>
-            <Polygon Points="0,20 230,140 0,270" Fill="#41B1B6" />
-            <Polygon Points="100,300 200,270 180,400" Fill="#41B1B6" />
-            <Ellipse Margin="250 150 0 0" Width="40" Height="40" Fill="#41B1B6" />
-            <Ellipse Margin="50 300 0 0" Width="20" Height="20" Fill="#41B1B6" />
-        </Canvas>
-        
-        <Grid Grid.Row="0">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="1.5*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Canvas>
+                    <Polygon Points="0,20 230,140 0,270" Fill="#41B1B6" />
+                    <Polygon Points="100,300 200,270 180,400" Fill="#41B1B6" />
+                    <Ellipse Margin="250 150 0 0" Width="40" Height="40" Fill="#41B1B6" />
+                    <Ellipse Margin="50 300 0 0" Width="20" Height="20" Fill="#41B1B6" />
+                </Canvas>
+
+                <Grid Grid.Row="0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0 20 0 0">
                         <TextBox x:Name="txtBox1" Height="23" Margin="15,10,0,0" TextWrapping="Wrap" Text=""  Width="620" />
                         <Button x:Name="Browse" Content="浏览" Margin="10 0 10 0" Width="100" Style="{StaticResource button1}" Click="Browse_Click"/>
                     </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="sptSizeTB" HorizontalAlignment="Left" Height="23" Margin="15,10,10,10" TextWrapping="Wrap" ToolTip="要分割的大小" Text="50" VerticalAlignment="Top" Width="120"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
 
-                <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="60">
-                    <ComboBoxItem Content="KB" />
-                    <ComboBoxItem Content="MB" IsSelected="True" />
-                    <ComboBoxItem Content="GB" />
-                </ComboBox>
-            </StackPanel>
-           
-        </Grid>
-        <Grid Grid.Row="2">
-            <StackPanel Orientation="Horizontal" >
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0 20 0 0">
+                            <TextBox x:Name="saveTxtBox" Height="23" Margin="15,10,0,0" TextWrapping="Wrap" Text=""  Width="620" />
+                            <Button x:Name="saveBrowse" Content="浏览" Margin="10 0 10 0" Width="100" Style="{StaticResource button1}" Click="saveBrowse_Click"/>
+                        </StackPanel>
+                    </StackPanel>
 
-                <Button Content="拖拽到此" x:Name="RecvFileDrag"  Margin="10 10 10 10" Style="{StaticResource button}" Drop="RecvFileDrag_Drop" AllowDrop="True" DragEnter="RecvFileDrag_DragEnter"/>
-            
-                <Button Content="分割" x:Name="splitBtn"   Margin="250 10 10 10"  Style="{StaticResource button}" Click="splitBtn_Click"/>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Row="3" >
-            <TextBlock x:Name="statusTB" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom" Height="35" Width="622"/>
-        </Grid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBox x:Name="sptSizeTB" HorizontalAlignment="Left" Height="23" Margin="15,10,10,0" TextWrapping="Wrap" ToolTip="要分割的大小" Text="50" VerticalAlignment="Top" Width="120"/>
+                        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.457,2.278">
+                            <ComboBoxItem Content="KB" />
+                            <ComboBoxItem Content="MB" IsSelected="True" />
+                            <ComboBoxItem Content="GB" />
+                        </ComboBox>
+                    </StackPanel>
+
+                </Grid>
+                <Grid Grid.Row="3">
+                    <StackPanel Orientation="Horizontal" >
+
+                        <Button Content="拖拽到此" x:Name="RecvFileDrag"  Margin="10 10 10 10" Style="{StaticResource button}" Drop="RecvFileDrag_Drop" AllowDrop="True" DragEnter="RecvFileDrag_DragEnter"/>
+
+                        <Button Content="分割" x:Name="splitBtn"   Margin="250 10 10 10"  Style="{StaticResource button}" Click="splitBtn_Click"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="4" >
+                    <TextBlock x:Name="statusTB" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom" Height="35" Width="622"/>
+                </Grid>
             </Grid>
         </Border>
     </Grid>
